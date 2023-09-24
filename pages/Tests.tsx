@@ -5,6 +5,7 @@ import { Header } from "../components/Header/Header";
 import { Statistics } from "../components/Statistics/Statistics";
 import TestList from "../components/TestList/TestList";
 import SelectTest from "../components/TestList/SelectTest";
+import { useFonts } from "expo-font";
 
 export const Tests = () => {
   useEffect(() => {
@@ -17,12 +18,19 @@ export const Tests = () => {
       })
     );
   }, []);
-
+  const [loaded] = useFonts({
+    Comfortaa: require("../assets/fonts/Comfortaa-Variable.ttf"),
+    "Comfortaa-Bold": require("../assets/fonts/static/Comfortaa-Bold.ttf"),
+  });
+  if (!loaded) {
+    return null;
+  }
+  const testStatistics = { finished: 30, failed: 25, unfinished: 25 };
   return (
     <ScrollView style={{ flex: 1, backgroundColor: "#FAFAFA" }}>
       <View style={styles.container}>
         <Header />
-        <Statistics />
+        <Statistics testStatistics={testStatistics} />
         <SelectTest score={0} label="Test 1" id={1} />
         <TestList />
       </View>
