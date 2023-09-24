@@ -1,19 +1,19 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { openDB } from "../database/openDb";
 import { ScrollView, View, StyleSheet } from "react-native";
 import { Header } from "../components/Header/Header";
 import { Statistics } from "../components/Statistics/Statistics";
 import TestList from "../components/TestList/TestList";
-import SelectTest from "../components/TestList/SelectTest";
 import { useFonts } from "expo-font";
+import RandomTest from "../components/TestList/RandomTest";
 
 export const Tests = () => {
+  const [results, setResults] = useState<any>([]);
   useEffect(() => {
     openDB().then((db) =>
       db.transaction((tx) => {
-        tx.executeSql("SELECT * FROM Questions", [], (tx, results) => {
-          console.log(results.rows);
-          console.log("success");
+        tx.executeSql("SELECT * FROM Percentage", [], (tx, results) => {
+          setResults(results.rows._array);
         });
       })
     );
@@ -22,16 +22,28 @@ export const Tests = () => {
     Comfortaa: require("../assets/fonts/Comfortaa-Variable.ttf"),
     "Comfortaa-Bold": require("../assets/fonts/static/Comfortaa-Bold.ttf"),
   });
+  console.log("sssresults", results);
   if (!loaded) {
     return null;
   }
-  const testStatistics = { finished: 30, failed: 25, unfinished: 25 };
+  const testStatistics = () => {
+    let testsStat = {
+      finished: 0,
+      failed: 0,
+      unfinished: 80 - results.length,
+    };
+    // results.forEach(element => {
+    //   element.
+    // });
+    return testsStat;
+  };
+
   return (
     <ScrollView style={{ flex: 1, backgroundColor: "#FAFAFA" }}>
       <View style={styles.container}>
         <Header />
-        <Statistics testStatistics={testStatistics} />
-        <SelectTest score={0} label="Test 1" id={1} />
+        <Statistics testStatistics={testStatistics()} />
+        <RandomTest />
         <TestList />
       </View>
     </ScrollView>

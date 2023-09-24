@@ -1,6 +1,6 @@
-import { View, StyleSheet, Text } from "react-native";
+import { View, StyleSheet } from "react-native";
 import Svg, { Circle } from "react-native-svg";
-import { getHeight, getWidth } from "../../Util/screenOperations";
+import { getWidth } from "../../Util/screenOperations";
 import StyledText from "../StyledText";
 import TestStatistics from "../Statistics/Statistics";
 
@@ -33,13 +33,15 @@ const TestDetail = ({
   number?: number;
 }) => {
   // Circle Size
-  const crSz = getWidth(20) / 2;
+  const crSz = getWidth(12) / 2;
   return (
     <View style={style.TestDetailContainer}>
-      {/* SVG Circle */}
-      <Svg width={crSz * 2} height={crSz * 2}>
-        <Circle cx={crSz} cy={crSz} r={crSz} fill={color} />
-      </Svg>
+      <View style={{ alignItems: "center", marginTop: 4 }}>
+        {/* SVG Circle */}
+        <Svg width={crSz * 2} height={crSz * 2}>
+          <Circle cx={crSz} cy={crSz} r={crSz} fill={color} />
+        </Svg>
+      </View>
 
       <StyledText style={style.TestDetailNumber}>({number ?? 0})</StyledText>
       <StyledText style={style.TestDetailText}>{text}</StyledText>
@@ -54,7 +56,6 @@ const style = StyleSheet.create({
   },
   TestDetailsHeader: {
     fontSize: getWidth(24),
-    marginBottom: 7,
   },
   TestDetailContainer: {
     display: "flex",
@@ -62,13 +63,7 @@ const style = StyleSheet.create({
     alignItems: "center",
     // gap: getWidth(8),
 
-    borderColor: "#DBDBDB",
-    borderWidth: 1,
-    borderRadius: 8,
-
-    marginTop: 8,
-    paddingHorizontal: getWidth(8),
-    paddingVertical: getHeight(4),
+    marginTop: 4,
   },
   TestDetailNumber: {
     fontSize: getWidth(14),
