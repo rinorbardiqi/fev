@@ -17,6 +17,7 @@
     "react": "18.2.0",
     "react-native": "0.72.4",
     "react-native-pie-chart": "^3.0.1",
+    "react-native-progress": "^5.0.0",
     "react-native-svg": "13.9.0",
     "victory-native": "^36.6.11"
   },

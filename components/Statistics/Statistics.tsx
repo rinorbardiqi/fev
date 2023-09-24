@@ -12,8 +12,8 @@ export const Statistics = () => {
             width={200}
             height={200}
             data={[
-              { x: 1, y: 120 },
-              { x: 2, y: 100 },
+              { x: 1, y: 30 },
+              { x: 2, y: 70 },
             ]}
             innerRadius={30}
             style={{ labels: { fontSize: 20, fill: "white" } }}

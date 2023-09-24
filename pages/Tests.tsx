@@ -1,8 +1,10 @@
 import { useEffect } from "react";
 import { openDB } from "../database/openDb";
-import { ScrollView, View, StyleSheet, Text } from "react-native";
+import { ScrollView, View, StyleSheet } from "react-native";
 import { Header } from "../components/Header/Header";
 import { Statistics } from "../components/Statistics/Statistics";
+import TestList from "../components/TestList/TestList";
+import SelectTest from "../components/TestList/SelectTest";
 
 export const Tests = () => {
   useEffect(() => {
@@ -21,7 +23,8 @@ export const Tests = () => {
       <View style={styles.container}>
         <Header />
         <Statistics />
-        <Text>test</Text>
+        <SelectTest score={0} label="Test 1" id={1} />
+        <TestList />
       </View>
     </ScrollView>
   );
@@ -31,14 +34,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     height: "100%",
+    width: "100%",
     alignItems: "center",
   },
   title: {
     fontSize: 24,
     margin: 10,
-  },
-  centerText: {
-    alignItems: "center",
-    justifyContent: "center",
   },
 });
