@@ -1,18 +1,20 @@
 import { View, StyleSheet, Text } from "react-native";
 import Svg, { Circle } from "react-native-svg";
+import { getHeight, getWidth } from "../../Util/screenOperations";
+import StyledText from "../StyledText";
+import TestStatistics from "../Statistics/Statistics";
 
 const TestDetails = ({
-  finished,
-  failed,
-  unfinished,
+  testStatistics,
 }: {
-  finished?: number;
-  failed?: number;
-  unfinished?: number;
+  testStatistics?: TestStatistics;
 }) => {
+  const { finished, failed, unfinished } = { ...testStatistics };
   return (
     <View style={style.TestDetailsCenter}>
-      <Text style={style.TestDetailHeader}>Statistikat</Text>
+      <StyledText isBold style={style.TestDetailsHeader}>
+        Statistikat
+      </StyledText>
       <TestDetail color="#4FCA82" number={finished} text="Të perfunduara" />
       <TestDetail color="#FF5D5D" number={failed} text="Të dështuara" />
       <TestDetail color="#C0CDD6" number={unfinished} text="Të thata" />
@@ -30,15 +32,17 @@ const TestDetail = ({
   text: string;
   number?: number;
 }) => {
+  // Circle Size
+  const crSz = getWidth(20) / 2;
   return (
     <View style={style.TestDetailContainer}>
       {/* SVG Circle */}
-      <Svg width={12} height={12}>
-        <Circle cx={6} cy={6} r={6} fill={color} />
+      <Svg width={crSz * 2} height={crSz * 2}>
+        <Circle cx={crSz} cy={crSz} r={crSz} fill={color} />
       </Svg>
 
-      <Text style={style.TestDetailNumber}>({number ?? 0})</Text>
-      <Text style={style.TestDetailText}>{text}</Text>
+      <StyledText style={style.TestDetailNumber}>({number ?? 0})</StyledText>
+      <StyledText style={style.TestDetailText}>{text}</StyledText>
     </View>
   );
 };
@@ -48,28 +52,30 @@ const style = StyleSheet.create({
     display: "flex",
     justifyContent: "center",
   },
+  TestDetailsHeader: {
+    fontSize: getWidth(24),
+    marginBottom: 7,
+  },
   TestDetailContainer: {
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    gap: 4,
+    // gap: getWidth(8),
 
     borderColor: "#DBDBDB",
     borderWidth: 1,
     borderRadius: 8,
 
     marginTop: 8,
-    paddingHorizontal: 4,
-    paddingVertical: 1,
+    paddingHorizontal: getWidth(8),
+    paddingVertical: getHeight(4),
   },
   TestDetailNumber: {
-    fontSize: 14,
+    fontSize: getWidth(14),
+    textAlign: "center",
+    width: getWidth(35),
   },
   TestDetailText: {
-    fontSize: 12,
-  },
-  TestDetailHeader: {
-    fontSize: 22,
-    marginBottom: 7,
+    fontSize: getWidth(12),
   },
 });

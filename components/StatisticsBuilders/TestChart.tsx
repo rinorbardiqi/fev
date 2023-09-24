@@ -1,24 +1,19 @@
 import { View, StyleSheet, Text } from "react-native";
 import PieChart from "react-native-pie-chart";
+import { getWidth } from "../../Util/screenOperations";
+import StyledText from "../StyledText";
+import TestStatistics from "../Statistics/Statistics";
 
-const TestChart = ({
-  finished,
-  failed,
-  unfinished,
-}: {
-  finished?: number;
-  failed?: number;
-  unfinished?: number;
-}) => {
-  const dataAvailable = finished && failed && unfinished
-  const totalTests = dataAvailable ? finished + failed + unfinished : 0;
-  const series = dataAvailable ? [unfinished, failed, finished] : [1];
-  const sliceColors = dataAvailable ? ["#C0CDD6", "#FF5D5D", "#4FCA82"] : ["#C0CDD6"];
+const TestChart = ({ testStatistics: tS }: { testStatistics?: TestStatistics }) => {
+  const testsSums = tS ? tS.unfinished + tS.failed + tS.finished : 0;
+  const series = tS ? [tS.unfinished, tS.failed, tS.finished] : [1];
+  const sliceColors = tS ? ["#C0CDD6", "#FF5D5D", "#4FCA82"] : ["#C0CDD6"];
+
   return (
     <View style={style.TestChartContainer}>
-      <Text style={style.CenterLabel}>{totalTests}</Text>
+      <StyledText style={style.CenterLabel}>{testsSums}</StyledText>
       <PieChart
-        widthAndHeight={140}
+        widthAndHeight={getWidth(140)}
         series={series}
         sliceColor={sliceColors}
         coverRadius={0.7}
