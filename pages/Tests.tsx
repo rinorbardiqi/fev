@@ -15,13 +15,13 @@ export const Tests = () => {
       })
     );
   }, []);
-
+  const testDetails = { finished: 31, failed: 14, unfinished: 6 };
   return (
     <ScrollView style={{ flex: 1, backgroundColor: "#FAFAFA" }}>
       <View style={styles.container}>
         <Header />
-        <Statistics />
-        <Text>test</Text>
+        <Statistics testDetails={testDetails} />
+        <Text>asdasdas</Text>
       </View>
     </ScrollView>
   );
