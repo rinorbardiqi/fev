@@ -2,13 +2,23 @@ import { View, StyleSheet, Platform } from "react-native";
 import StyledText from "../StyledText";
 import { getHeight, getWidth } from "../../Util/screenOperations";
 import SelectTest from "./SelectTest";
+import { ResultType } from "../../pages/Tests";
 
-const RandomTest = () => {
+const RandomTest = ({ results }: { results: ResultType[] }) => {
+  const randomValue = Math.floor(Math.random() * 80) + 1;
   return (
     <View style={styles.wrapper}>
       <StyledText>Test i rastësishëm</StyledText>
       <View style={{ marginTop: getHeight(16) }}>
-        <SelectTest score={0} label="Test 2" id={2} />
+        <SelectTest
+          score={
+            results.find((item) => item.test === randomValue)?.perc
+              ? results.find((item) => item.test === randomValue)?.perc ?? 0
+              : 0
+          }
+          label={`Test ${randomValue}`}
+          id={randomValue}
+        />
       </View>
     </View>
   );

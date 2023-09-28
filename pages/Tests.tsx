@@ -6,7 +6,10 @@ import { Statistics } from "../components/Statistics/Statistics";
 import TestList from "../components/TestList/TestList";
 import { useFonts } from "expo-font";
 import RandomTest from "../components/TestList/RandomTest";
-
+export interface ResultType {
+  test: number;
+  perc: number;
+}
 export const Tests = () => {
   const [results, setResults] = useState<any>([]);
   useEffect(() => {
@@ -32,9 +35,13 @@ export const Tests = () => {
       failed: 0,
       unfinished: 80 - results.length,
     };
-    // results.forEach(element => {
-    //   element.
-    // });
+    results.forEach((item: ResultType) => {
+      if (item.perc > 84) {
+        testsStat.finished += 1;
+      } else {
+        testsStat.failed += 1;
+      }
+    });
     return testsStat;
   };
 
@@ -43,8 +50,8 @@ export const Tests = () => {
       <View style={styles.container}>
         <Header />
         <Statistics testStatistics={testStatistics()} />
-        <RandomTest />
-        <TestList />
+        <RandomTest results={results} />
+        <TestList results={results} />
       </View>
     </ScrollView>
   );

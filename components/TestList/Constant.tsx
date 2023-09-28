@@ -1,10 +1,54 @@
-export const tests = () => {
-  return Array.from({ length: 80 }).map((_, i) => ({
-    id: i,
-    score: Math.floor(Math.random() * 100),
-    label: `Test ${i + 1}`,
+import { ResultType } from "../../pages/Tests";
+
+export const updateScores = (data: ResultType[], filterId: number) => {
+  const testsArray = Array.from({ length: 80 }).map((_, index) => ({
+    id: index,
+    score: 0,
+    label: `Test ${index + 1}`,
   }));
+  enum FilterData {
+    ALL = 1,
+    FINISHED = 2,
+    FAILED = 3,
+  }
+  const updatedTests = testsArray
+    .map((testData) => {
+      const matchingTest = data.find((item) => item.test === testData.id + 1);
+      if (!matchingTest) {
+        return filterId === FilterData.FINISHED ? undefined : testData;
+      }
+      switch (filterId) {
+        case FilterData.ALL:
+          return {
+            ...testData,
+            score: matchingTest.perc,
+          };
+
+        case FilterData.FINISHED:
+          if (matchingTest.perc > 84) {
+            return {
+              ...testData,
+              score: matchingTest.perc,
+            };
+          }
+          break;
+        case FilterData.FAILED:
+          if (matchingTest.perc < 85) {
+            return {
+              ...testData,
+              score: matchingTest.perc,
+            };
+          }
+          break;
+        default:
+          return testData;
+      }
+    })
+    .filter(Boolean) as { id: number; score: number; label: string }[];
+
+  return updatedTests;
 };
+
 export const FilterTest = [
   {
     label: "Të gjitha",
