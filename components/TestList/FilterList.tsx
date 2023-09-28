@@ -4,9 +4,14 @@ import React, { useState } from "react";
 import { getHeight, getWidth } from "../../Util/screenOperations";
 import StyledText from "../StyledText";
 
-const FilterList = () => {
+const FilterList = ({
+  updateFilter,
+}: {
+  updateFilter: (id: number) => void;
+}) => {
   const [filters, setFilters] = useState(FilterTest);
   const onActiveFilterChange = (id: number) => {
+    updateFilter(id);
     setFilters((prev) =>
       prev.map((item) => ({ ...item, active: item.id === id }))
     );
