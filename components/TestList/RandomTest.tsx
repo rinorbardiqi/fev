@@ -1,6 +1,6 @@
 import { View, StyleSheet, Platform } from "react-native";
 import StyledText from "../StyledText";
-import { getHeight, getWidth } from "../../Util/screenOperations";
+import { getHeight, getWidth } from "../../util/screenOperations";
 import SelectTest from "./SelectTest";
 import { ResultType } from "../../pages/Tests";
 

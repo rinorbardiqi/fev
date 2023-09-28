@@ -1,6 +1,6 @@
 import { TouchableOpacity, StyleSheet, Platform, View } from "react-native";
 import { colorBasedOnScore } from "./helpers/colorBasedOnScore";
-import { getHeight, getWidth } from "../../Util/screenOperations";
+import { getHeight, getWidth } from "../../util/screenOperations";
 import StyledText from "../StyledText";
 
 const SelectTest = ({

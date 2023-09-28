@@ -1,6 +1,6 @@
 import { FlatList, SafeAreaView, View, StyleSheet } from "react-native";
 import SelectTest from "./SelectTest";
-import { getWidth } from "../../Util/screenOperations";
+import { getWidth } from "../../util/screenOperations";
 import StyledText from "../StyledText";
 import FilterList from "./FilterList";
 import HorizontalLine from "../../Svgs/HorizontalLine";

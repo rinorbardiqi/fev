@@ -1,8 +1,9 @@
 import { View, StyleSheet } from "react-native";
 import Svg, { Circle } from "react-native-svg";
-import { getWidth } from "../../Util/screenOperations";
+import { getHeight, getWidth } from "../../util/screenOperations";
 import StyledText from "../StyledText";
 import TestStatistics from "../Statistics/Statistics";
+import colors from "../../util/colors";
 
 const TestDetails = ({
   testStatistics,
@@ -15,9 +16,13 @@ const TestDetails = ({
       <StyledText isBold style={style.TestDetailsHeader}>
         Statistikat
       </StyledText>
-      <TestDetail color="#4FCA82" number={finished} text="Të perfunduara" />
-      <TestDetail color="#FF5D5D" number={failed} text="Të dështuara" />
-      <TestDetail color="#C0CDD6" number={unfinished} text="Të thata" />
+      <TestDetail
+        color={colors.green}
+        number={finished}
+        text="Të perfunduara"
+      />
+      <TestDetail color={colors.red} number={failed} text="Të dështuara" />
+      <TestDetail color={colors.gray} number={unfinished} text="Të thata" />
     </View>
   );
 };
@@ -55,7 +60,7 @@ const style = StyleSheet.create({
     justifyContent: "center",
   },
   TestDetailsHeader: {
-    fontSize: getWidth(24),
+    fontSize: getHeight(24),
   },
   TestDetailContainer: {
     display: "flex",
@@ -63,14 +68,20 @@ const style = StyleSheet.create({
     alignItems: "center",
     // gap: getWidth(8),
 
+    borderColor: colors.lightGray,
+    borderWidth: 1,
+    borderRadius: 8,
+
     marginTop: 4,
+    paddingHorizontal: getWidth(8),
+    paddingVertical: getHeight(4),
   },
   TestDetailNumber: {
-    fontSize: getWidth(14),
+    fontSize: getHeight(14),
     textAlign: "center",
     width: getWidth(35),
   },
   TestDetailText: {
-    fontSize: getWidth(12),
+    fontSize: getHeight(12),
   },
 });

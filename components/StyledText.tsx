@@ -1,14 +1,28 @@
 import { Text } from "react-native";
+import colors from "../util/colors";
 
-const StyledText = (props: any) => {
+const StyledText = ({
+  style,
+  isBold,
+  isSecondary,
+  children,
+}: {
+  style?: any;
+  isBold?: boolean;
+  isSecondary?: boolean;
+  children?: any;
+}) => {
   return (
     <Text
       style={[
-        props.style,
-        { fontFamily: props.isBold ? "Comfortaa-Bold" : "Comfortaa" },
+        style,
+        {
+          fontFamily: isBold ? "Comfortaa-Bold" : "Comfortaa",
+          color: isSecondary ? colors.white : colors.primary,
+        },
       ]}
     >
-      {props.children}
+      {children}
     </Text>
   );
 };

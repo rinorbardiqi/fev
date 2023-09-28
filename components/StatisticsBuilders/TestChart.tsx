@@ -1,10 +1,14 @@
 import { View, StyleSheet, Text } from "react-native";
 import PieChart from "react-native-pie-chart";
-import { getWidth } from "../../Util/screenOperations";
+import { getHeight, getWidth } from "../../util/screenOperations";
 import StyledText from "../StyledText";
 import TestStatistics from "../Statistics/Statistics";
 
-const TestChart = ({ testStatistics: tS }: { testStatistics?: TestStatistics }) => {
+const TestChart = ({
+  testStatistics: tS,
+}: {
+  testStatistics?: TestStatistics;
+}) => {
   const testsSums = tS ? tS.unfinished + tS.failed + tS.finished : 0;
   const series = tS ? [tS.unfinished, tS.failed, tS.finished] : [1];
   const sliceColors = tS ? ["#C0CDD6", "#FF5D5D", "#4FCA82"] : ["#C0CDD6"];
@@ -31,6 +35,6 @@ const style = StyleSheet.create({
   },
   CenterLabel: {
     position: "absolute",
-    fontSize: 24,
+    fontSize: getHeight(24),
   },
 });

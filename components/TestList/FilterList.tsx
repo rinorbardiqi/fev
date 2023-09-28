@@ -1,7 +1,7 @@
 import { FlatList, StyleSheet, TouchableOpacity } from "react-native";
 import { FilterTest } from "./Constant";
 import React, { useState } from "react";
-import { getHeight, getWidth } from "../../Util/screenOperations";
+import { getHeight, getWidth } from "../../util/screenOperations";
 import StyledText from "../StyledText";
 
 const FilterList = ({
