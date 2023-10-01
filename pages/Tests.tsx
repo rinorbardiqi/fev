@@ -10,7 +10,11 @@ export interface ResultType {
   test: number;
   perc: number;
 }
-export const Tests = () => {
+export const Tests = ({
+  setSelectedTest,
+}: {
+  setSelectedTest: (id: number) => void;
+}) => {
   const [results, setResults] = useState<any>([]);
   useEffect(() => {
     openDB().then((db) =>
@@ -21,14 +25,7 @@ export const Tests = () => {
       })
     );
   }, []);
-  const [loaded] = useFonts({
-    Comfortaa: require("../assets/fonts/Comfortaa-Variable.ttf"),
-    "Comfortaa-Bold": require("../assets/fonts/static/Comfortaa-Bold.ttf"),
-  });
   console.log("sssresults", results);
-  if (!loaded) {
-    return null;
-  }
   const testStatistics = () => {
     let testsStat = {
       finished: 0,
@@ -51,7 +48,7 @@ export const Tests = () => {
         <Header />
         <Statistics testStatistics={testStatistics()} />
         <RandomTest results={results} />
-        <TestList results={results} />
+        <TestList setSelectedTest={setSelectedTest} results={results} />
       </View>
     </ScrollView>
   );

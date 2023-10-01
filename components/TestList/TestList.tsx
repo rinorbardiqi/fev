@@ -7,7 +7,13 @@ import HorizontalLine from "../../Svgs/HorizontalLine";
 import { ResultType } from "../../pages/Tests";
 import { updateScores } from "./Constant";
 import { useState } from "react";
-const TestList = ({ results }: { results: ResultType[] }) => {
+const TestList = ({
+  results,
+  setSelectedTest,
+}: {
+  results: ResultType[];
+  setSelectedTest: (id: number) => void;
+}) => {
   const [activeFilter, setActiveFilter] = useState(1);
   const updateFilter = (id: number) => {
     setActiveFilter(id);
@@ -33,6 +39,7 @@ const TestList = ({ results }: { results: ResultType[] }) => {
               score={item.score}
               label={item.label}
               key={item.id}
+              setSelectedTest={setSelectedTest}
             />
           );
         }}

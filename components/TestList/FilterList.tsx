@@ -3,6 +3,8 @@ import { FilterTest } from "./Constant";
 import React, { useState } from "react";
 import { getHeight, getWidth } from "../../util/screenOperations";
 import StyledText from "../StyledText";
+import { colorBasedOnScore } from "./helpers/colorBasedOnScore";
+import colors from "../../util/colors";
 
 const FilterList = ({
   updateFilter,
@@ -25,15 +27,15 @@ const FilterList = ({
           <TouchableOpacity
             style={
               item.active
-                ? { ...styles.wrapper, backgroundColor: "#1765AD" }
+                ? { ...styles.wrapper, backgroundColor: colors.blue }
                 : {
                     ...styles.wrapper,
-                    backgroundColor: "#C0CDD6",
+                    backgroundColor: colors.white,
                   }
             }
             onPress={() => onActiveFilterChange(item.id)}
           >
-            <StyledText style={{ color: "#FFF", fontSize: 12 }}>
+            <StyledText isSecondary={item.active} style={{ fontSize: 12 }}>
               {item.label}
             </StyledText>
           </TouchableOpacity>

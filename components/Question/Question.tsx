@@ -1,9 +1,4 @@
-import {
-  FlatList,
-  Image,
-  StyleSheet,
-  View,
-} from "react-native";
+import { FlatList, Image, StyleSheet, View } from "react-native";
 import Answer from "../QuestionBuilders/Answer";
 import StyledText from "../StyledText";
 import { getHeight, getWidth } from "../../util/screenOperations";

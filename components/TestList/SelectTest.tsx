@@ -2,21 +2,25 @@ import { TouchableOpacity, StyleSheet, Platform, View } from "react-native";
 import { colorBasedOnScore } from "./helpers/colorBasedOnScore";
 import { getHeight, getWidth } from "../../util/screenOperations";
 import StyledText from "../StyledText";
+import colors from "../../util/colors";
 
 const SelectTest = ({
   score,
   id,
   label,
+  setSelectedTest,
 }: {
   id: number;
   score: number;
   label: string;
+  setSelectedTest: (id: number) => void;
 }) => {
   return (
     <TouchableOpacity
       style={[styles.wrapper, { borderLeftColor: colorBasedOnScore(score) }]}
+      onPress={() => setSelectedTest(id)}
     >
-      <StyledText style={{ width: getWidth(48), fontSize: 12 }}>
+      <StyledText style={{ width: getWidth(56), fontSize: 12 }}>
         {label}
       </StyledText>
       <View style={styles.progressBar}>
@@ -64,10 +68,10 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   progressBar: {
-    width: getWidth(91),
+    width: getWidth(85),
     height: 5,
     borderRadius: 10,
-    backgroundColor: "#C0CDD6",
+    backgroundColor: colors.gray,
   },
   fillBar: {
     height: "100%",
