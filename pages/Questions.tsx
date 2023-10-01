@@ -1,62 +1,38 @@
 import { View } from "react-native";
-import StyledText from "../components/StyledText";
-import { useEffect, useState } from "react";
-import { openDB } from "../database/openDb";
-
-interface Answer {
-  id: number;
-  testNo: number;
-  points: number;
-  image?: string;
-  question: string;
-  ans1: string;
-  ans2: string;
-  ans3: string;
-  ans1_cor: string;
-  ans2_cor: string;
-  ans3_cor: string;
-  ans1_sel?: string;
-  ans2_sel?: string;
-  ans3_sel?: string;
-  correct: number;
-}
+import { useEffect } from "react";
+import Question from "../components/Question/Question";
+import useDatabaseStore from "../store/database";
+import { QuestionProp } from "../util/databaseType";
 
 const Questions = ({
-  testNumber,
-  isReview,
+  route,
+  navigation,
 }: {
-  testNumber: number;
-  isReview?: boolean;
+  route: QuestionProp["route"];
+  navigation: QuestionProp["navigation"];
 }) => {
-  const [answerList, setAnswerList] = useState<any>();
+  const { testNumber } = route.params; // Make sure this line is correctly receiving the prop
+  // console.log("testNumber", testNumber);
+  const { fetchQuestionsByTestNumber, questionsData } = useDatabaseStore();
   useEffect(() => {
-    openDB().then(
-      (db) => {
-        console.log(`blahhh ${db._name}`);
-        db.transaction((tx) => {
-          tx.executeSql(
-            "SELECT * FROM Questions WHERE testNo == 1",
-            [],
-            (tx, results) => {
-              setAnswerList(results.rows.item);
-            },
-            (sql, err) => {
-              console.log(`${err}\n ${sql}`);
-              return false;
-            }
-          );
-        });
-      }
-      // db.exec([{ sql: "PRAGMA foreign_keys = ON;", args: [] }], false, () =>
-      //   console.log("Foreign keys turned on")
-      // )
-    );
-    console.log(answerList);
+    fetchQuestionsByTestNumber?.(testNumber);
   }, []);
-  const toAnswerList = (data?: any) => (data ? (data as Answer[]) : undefined);
+  if (!questionsData) return null;
   return (
     <View>
-      <StyledText>{"\n" + "blahh"}</StyledText>
+      <Question
+        question={questionsData?.[0].question}
+        testNumber={questionsData?.[0].testNo}
+        questionNumber={1}
+        answers={[
+          questionsData?.[0].ans1 ?? "",
+          questionsData?.[0].ans2 ?? "",
+          questionsData?.[0].ans3 ?? "",
+        ]}
+        onLeaveTest={() => {
+          navigation.goBack();
+        }}
+      />
     </View>
   );
 };

@@ -1,30 +1,41 @@
-import { ScrollView, View } from "react-native";
-import { Tests } from "./pages/Tests";
+import { NavigationContainer } from "@react-navigation/native";
 import { useFonts } from "expo-font";
-import TestList from "./components/TestList/TestList";
-import { useState } from "react";
-import Questions from "./pages/Questions";
+import { useEffect } from "react";
+import useDatabaseStore from "./store/database";
+import Tests from "./pages/Tests"; // Import your Tests component
+import Questions from "./pages/Questions"; // Import your Questions component
+import { createStackNavigator } from "@react-navigation/stack";
+import { ScreenType } from "./util/databaseType";
+
+const Stack = createStackNavigator<ScreenType>();
 
 export default function App() {
   const [loaded] = useFonts({
     Comfortaa: require("./assets/fonts/Comfortaa-Variable.ttf"),
     "Comfortaa-Bold": require("./assets/fonts/static/Comfortaa-Bold.ttf"),
   });
-  const [selectedTest, setSelectedTest] = useState<number>(0);
-  const [isReview, setIsReview] = useState<boolean>();
-  const setTest = (id: number) => {
-    setSelectedTest(id);
-  };
+
+  const { initDB } = useDatabaseStore();
+
+  useEffect(() => {
+    initDB(); // Initialize the database connection
+  }, []);
+
   if (!loaded) {
     return null;
   }
+
   return (
-    <View style={{ flex: 1 }}>
-      {selectedTest ? (
-        <Questions testNumber={selectedTest} isReview={isReview} />
-      ) : (
-        <Tests setSelectedTest={setTest} />
-      )}
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator
+        initialRouteName="Tests"
+        screenOptions={{
+          headerShown: false,
+        }}
+      >
+        <Stack.Screen name="Tests" component={Tests} />
+        <Stack.Screen name="Questions" component={Questions} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }

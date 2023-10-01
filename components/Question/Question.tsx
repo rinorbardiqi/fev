@@ -6,6 +6,7 @@ import HorizontalLine from "../../Svgs/HorizontalLine";
 import QuestionHeader from "../QuestionBuilders/QuestionHeader";
 import colors from "../../util/colors";
 import Footer from "../QuestionBuilders/Footer";
+import { useNavigation } from "@react-navigation/native";
 
 const Question = ({
   testNumber,
@@ -13,6 +14,7 @@ const Question = ({
   question,
   image,
   answers,
+  onLeaveTest,
   isReview,
 }: {
   testNumber?: number;
@@ -21,9 +23,11 @@ const Question = ({
   question?: string;
   answers?: string[];
   isReview?: boolean;
+  onLeaveTest?: () => void;
 }) => {
   const leaveTest = () => {
     console.log("Leave test");
+    onLeaveTest?.();
   };
   const goBack = () => {
     console.log("Last question");

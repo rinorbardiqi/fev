@@ -2,9 +2,9 @@ import { View, StyleSheet, Platform } from "react-native";
 import StyledText from "../StyledText";
 import { getHeight, getWidth } from "../../util/screenOperations";
 import SelectTest from "./SelectTest";
-import { ResultType } from "../../pages/Tests";
+import { ResultType } from "../../util/databaseType";
 
-const RandomTest = ({ results }: { results: ResultType[] }) => {
+const RandomTest = ({ results }: { results?: ResultType[] }) => {
   const randomValue = Math.floor(Math.random() * 80) + 1;
   return (
     <View style={styles.wrapper}>
@@ -12,7 +12,7 @@ const RandomTest = ({ results }: { results: ResultType[] }) => {
       <View style={{ marginTop: getHeight(16) }}>
         <SelectTest
           score={
-            results.find((item) => item.test === randomValue)?.perc
+            results?.find((item) => item.test === randomValue)?.perc
               ? results.find((item) => item.test === randomValue)?.perc ?? 0
               : 0
           }

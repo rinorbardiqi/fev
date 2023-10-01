@@ -1,19 +1,13 @@
-import { FlatList, SafeAreaView, View, StyleSheet } from "react-native";
+import { FlatList, SafeAreaView, View } from "react-native";
 import SelectTest from "./SelectTest";
 import { getWidth } from "../../util/screenOperations";
 import StyledText from "../StyledText";
 import FilterList from "./FilterList";
 import HorizontalLine from "../../Svgs/HorizontalLine";
-import { ResultType } from "../../pages/Tests";
 import { updateScores } from "./Constant";
 import { useState } from "react";
-const TestList = ({
-  results,
-  setSelectedTest,
-}: {
-  results: ResultType[];
-  setSelectedTest: (id: number) => void;
-}) => {
+import { ResultType } from "../../util/databaseType";
+const TestList = ({ results }: { results?: ResultType[] }) => {
   const [activeFilter, setActiveFilter] = useState(1);
   const updateFilter = (id: number) => {
     setActiveFilter(id);
@@ -31,7 +25,7 @@ const TestList = ({
       </View>
       <FlatList
         scrollEnabled={false}
-        data={updateScores(results, activeFilter)}
+        data={updateScores(activeFilter, results)}
         renderItem={({ item }) => {
           return (
             <SelectTest
@@ -39,7 +33,6 @@ const TestList = ({
               score={item.score}
               label={item.label}
               key={item.id}
-              setSelectedTest={setSelectedTest}
             />
           );
         }}

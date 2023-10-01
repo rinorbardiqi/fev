@@ -3,22 +3,25 @@ import { colorBasedOnScore } from "./helpers/colorBasedOnScore";
 import { getHeight, getWidth } from "../../util/screenOperations";
 import StyledText from "../StyledText";
 import colors from "../../util/colors";
+import { useNavigation } from "@react-navigation/native";
+import { QuestionProp } from "../../util/databaseType";
 
 const SelectTest = ({
   score,
   id,
   label,
-  setSelectedTest,
 }: {
   id: number;
   score: number;
   label: string;
-  setSelectedTest: (id: number) => void;
 }) => {
+  const navigation = useNavigation<QuestionProp["navigation"]>();
   return (
     <TouchableOpacity
       style={[styles.wrapper, { borderLeftColor: colorBasedOnScore(score) }]}
-      onPress={() => setSelectedTest(id)}
+      onPress={() =>
+        navigation.navigate("Questions", { testNumber: String(id) })
+      }
     >
       <StyledText style={{ width: getWidth(56), fontSize: 12 }}>
         {label}

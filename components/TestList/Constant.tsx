@@ -1,8 +1,8 @@
-import { ResultType } from "../../pages/Tests";
+import { ResultType } from "../../util/databaseType";
 
-export const updateScores = (data: ResultType[], filterId: number) => {
+export const updateScores = (filterId: number, data?: ResultType[]) => {
   const testsArray = Array.from({ length: 80 }).map((_, index) => ({
-    id: index,
+    id: index + 1,
     score: 0,
     label: `Test ${index + 1}`,
   }));
@@ -13,7 +13,7 @@ export const updateScores = (data: ResultType[], filterId: number) => {
   }
   const updatedTests = testsArray
     .map((testData) => {
-      const matchingTest = data.find((item) => item.test === testData.id + 1);
+      const matchingTest = data?.find((item) => item.test === testData.id + 1);
       if (!matchingTest) {
         return filterId === FilterData.FINISHED ? undefined : testData;
       }
