@@ -2,7 +2,7 @@ import { View, StyleSheet, Text } from "react-native";
 import Svg, { Circle } from "react-native-svg";
 import TestChart from "../StatisticsBuilders/TestChart";
 import TestDetails from "../StatisticsBuilders/TestDetails";
-import { getHeight, getWidth } from "../../Util/screenOperations";
+import { getHeight, getWidth } from "../../util/screenOperations";
 
 export default interface TestStatistics {
   finished: number;
