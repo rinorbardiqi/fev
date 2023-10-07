@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { openDB } from "../database/openDb";
 import { SQLiteDatabase } from "expo-sqlite";
 import { QuestionType, ResultType } from "../util/databaseType";
+import { AnswerType } from "./questions";
 
 interface DatabaseStoreType {
   db?: SQLiteDatabase;
@@ -10,6 +11,7 @@ interface DatabaseStoreType {
   initDB: () => void;
   fetchPercentageData: () => void;
   fetchQuestionsByTestNumber: (testNumber: string) => void;
+  updateSelectedAnswers: (selectedAns: AnswerType[]) => void;
 }
 
 const useDatabaseStore = create<DatabaseStoreType>((set) => ({
@@ -57,6 +59,47 @@ const useDatabaseStore = create<DatabaseStoreType>((set) => ({
       set({ questionsData: result });
     } catch (error) {
       console.error("Error fetching questions:", error);
+    }
+  },
+  updateSelectedAnswers: async (selectedData: AnswerType[]) => {
+    const { db } = useDatabaseStore.getState();
+
+    try {
+      await new Promise<void>((resolve, reject) => {
+        db?.transaction((tx) => {
+          selectedData.forEach(({ testId, selected }) => {
+            // Make sure you handle null values appropriately if needed
+            const ans1_sel = selected.ans1_sel || null;
+            const ans2_sel = selected.ans2_sel || null;
+            const ans3_sel = selected.ans3_sel || null;
+
+            const query = `UPDATE Questions
+              SET
+                ans1_sel = ?,
+                ans2_sel = ?,
+                ans3_sel = ?
+              WHERE ID = ?`;
+
+            tx.executeSql(
+              query,
+              [ans1_sel, ans2_sel, ans3_sel, testId],
+              (_, result) => {
+                if (result.rowsAffected > 0) {
+                  console.log(
+                    `Updated ${result.rowsAffected} row(s) for testId ${testId}`
+                  );
+                } else {
+                  console.log(`No rows were updated for testId ${testId}`);
+                }
+              }
+            );
+          });
+
+          resolve();
+        });
+      });
+    } catch (error) {
+      console.error("Error updating selected answers:", error);
     }
   },
 }));

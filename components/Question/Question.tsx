@@ -6,7 +6,9 @@ import HorizontalLine from "../../Svgs/HorizontalLine";
 import QuestionHeader from "../QuestionBuilders/QuestionHeader";
 import colors from "../../util/colors";
 import Footer from "../QuestionBuilders/Footer";
-import { useNavigation } from "@react-navigation/native";
+import { AnswerType, useTestStore } from "../../store/questions";
+import useDatabaseStore from "../../store/database";
+import { QuestionProp } from "../../util/databaseType";
 
 const Question = ({
   testNumber,
@@ -16,6 +18,8 @@ const Question = ({
   answers,
   onLeaveTest,
   isReview,
+  navigation,
+  questionId,
 }: {
   testNumber?: number;
   questionNumber?: number;
@@ -24,19 +28,33 @@ const Question = ({
   answers?: string[];
   isReview?: boolean;
   onLeaveTest?: () => void;
+  questionId?: number;
+  navigation: QuestionProp["navigation"];
 }) => {
+  const {
+    upsertSelectedAnswers,
+    resetAnswers,
+    selectedAnswers,
+    nextQuestion,
+    lastQuestion,
+  } = useTestStore();
+  const { updateSelectedAnswers } = useDatabaseStore();
   const leaveTest = () => {
-    console.log("Leave test");
+    resetAnswers();
     onLeaveTest?.();
   };
   const goBack = () => {
-    console.log("Last question");
+    if (Number(questionNumber) > 0) lastQuestion();
   };
   const goForward = () => {
-    console.log("Next question");
+    if (questionNumber === 30) {
+      updateSelectedAnswers(selectedAnswers as AnswerType[]);
+      navigation.navigate("Tests");
+    } else {
+      nextQuestion();
+    }
   };
-  // mdoket po dashka me ja ba require perqdo foto qe e kemi?
-  // po menoj me ba nje map [key: number]: string ku si string eshte pathi per secilen image
+
   return (
     <View>
       <Image
@@ -59,16 +77,48 @@ const Question = ({
             scrollEnabled={true}
             data={answers}
             keyExtractor={(item) => item}
-            renderItem={({ item }) => (
-              <Answer
-                // key={item}
-                answer={item}
-                onClick={(ans: string) => {
-                  console.log(ans);
-                }}
-                isReview={isReview}
-              />
-            )}
+            renderItem={({ item, index }) => {
+              const selectedAns = selectedAnswers?.find(
+                (item) => item.testId === questionId
+              )?.selected;
+              return (
+                <Answer
+                  key={item}
+                  answer={item}
+                  onClick={() => {
+                    const updatedSelectedAnswers = selectedAnswers
+                      ?.map((item) => {
+                        if (item.testId === Number(questionId)) {
+                          return {
+                            testId: Number(questionId),
+                            selected: {
+                              ...item.selected,
+                              [`ans${index + 1}_sel`]: item.selected[
+                                `ans${index + 1}_sel`
+                              ]
+                                ? 0
+                                : 1,
+                            },
+                          };
+                        }
+                      })
+                      .filter(Boolean);
+                    upsertSelectedAnswers(
+                      Number(questionId),
+                      updatedSelectedAnswers?.[0]?.selected ?? {
+                        ans1_sel: index + 1 === 1 ? 1 : 0,
+                        ans2_sel: index + 1 === 2 ? 1 : 0,
+                        ans3_sel: index + 1 === 3 ? 1 : 0,
+                      }
+                    );
+                  }}
+                  isReview={isReview}
+                  isSelected={
+                    selectedAns?.[`ans${index + 1}_sel`] === 1 ? true : false
+                  }
+                />
+              );
+            }}
           ></FlatList>
         </View>
       </View>

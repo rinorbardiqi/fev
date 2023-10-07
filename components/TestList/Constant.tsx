@@ -13,7 +13,7 @@ export const updateScores = (filterId: number, data?: ResultType[]) => {
   }
   const updatedTests = testsArray
     .map((testData) => {
-      const matchingTest = data?.find((item) => item.test === testData.id + 1);
+      const matchingTest = data?.find((item) => item.test === testData.id);
       if (!matchingTest) {
         return filterId === FilterData.FINISHED ? undefined : testData;
       }

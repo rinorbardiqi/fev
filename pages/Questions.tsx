@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import Question from "../components/Question/Question";
 import useDatabaseStore from "../store/database";
 import { QuestionProp } from "../util/databaseType";
+import { useTestStore } from "../store/questions";
 
 const Questions = ({
   route,
@@ -11,27 +12,30 @@ const Questions = ({
   route: QuestionProp["route"];
   navigation: QuestionProp["navigation"];
 }) => {
-  const { testNumber } = route.params; // Make sure this line is correctly receiving the prop
-  // console.log("testNumber", testNumber);
+  const { testNumber } = route.params;
+  const { selectedQuestion, testSelectedIndex, selectTest } = useTestStore();
   const { fetchQuestionsByTestNumber, questionsData } = useDatabaseStore();
   useEffect(() => {
     fetchQuestionsByTestNumber?.(testNumber);
-  }, []);
-  if (!questionsData) return null;
+    selectTest(Number(testNumber));
+  }, [testNumber]);
+  if (!questionsData || !testNumber) return null;
   return (
     <View>
       <Question
-        question={questionsData?.[0].question}
-        testNumber={questionsData?.[0].testNo}
-        questionNumber={1}
+        question={questionsData?.[selectedQuestion].question}
+        testNumber={testSelectedIndex}
+        questionNumber={selectedQuestion + 1}
+        questionId={questionsData?.[selectedQuestion].ID}
         answers={[
-          questionsData?.[0].ans1 ?? "",
-          questionsData?.[0].ans2 ?? "",
-          questionsData?.[0].ans3 ?? "",
+          questionsData?.[selectedQuestion].ans1 ?? "",
+          questionsData?.[selectedQuestion].ans2 ?? "",
+          questionsData?.[selectedQuestion].ans3 ?? "",
         ]}
         onLeaveTest={() => {
           navigation.goBack();
         }}
+        navigation={navigation}
       />
     </View>
   );

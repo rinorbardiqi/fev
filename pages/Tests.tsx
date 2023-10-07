@@ -9,6 +9,7 @@ import { ResultType } from "../util/databaseType";
 
 const Tests = () => {
   const { fetchPercentageData, percentageData } = useDatabaseStore();
+  console.log("perectageData", percentageData);
   useEffect(() => {
     fetchPercentageData();
   }, []);
